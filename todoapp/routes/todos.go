@@ -2,8 +2,10 @@ package routes
 
 import (
 	"encoding/json/v2"
+	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"uuid"
 
 	"github.com/jasonabullard/go-scratchpad/todoapp/response"
@@ -38,7 +40,22 @@ func create(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, todo)
 }
 
+func delete(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	fmt.Println(id)
+	for i, todo := range todos {
+		if todo.ID == id {
+			todos = slices.Delete(todos, i, 1)
+			response.OK(w, todo)
+			return
+		}
+	}
+
+	response.Fail(w, http.StatusNotFound, "ID not found")
+}
+
 func registerTodos(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/v1/todos", list)
 	mux.HandleFunc("POST /api/v1/todos", create)
+	mux.HandleFunc("DELETE /api/v1/todos/{id}", delete)
 }
