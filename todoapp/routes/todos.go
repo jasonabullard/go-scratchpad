@@ -2,7 +2,6 @@ package routes
 
 import (
 	"encoding/json/v2"
-	"fmt"
 	"io"
 	"net/http"
 	"slices"
@@ -21,6 +20,18 @@ var todos = []Todo{}
 
 func list(w http.ResponseWriter, r *http.Request) {
 	response.OK(w, todos)
+}
+
+func get(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+	for _, todo := range todos {
+		if todo.ID == id {
+			response.OK(w, todo)
+			return
+		}
+	}
+
+	response.Fail(w, http.StatusNotFound, "Todo not found")
 }
 
 func create(w http.ResponseWriter, r *http.Request) {
@@ -42,7 +53,6 @@ func create(w http.ResponseWriter, r *http.Request) {
 
 func delete(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
-	fmt.Println(id)
 	for i, todo := range todos {
 		if todo.ID == id {
 			todos = slices.Delete(todos, i, 1)
@@ -56,6 +66,7 @@ func delete(w http.ResponseWriter, r *http.Request) {
 
 func registerTodos(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/v1/todos", list)
+	mux.HandleFunc("GET /api/v1/todos/{id}", get)
 	mux.HandleFunc("POST /api/v1/todos", create)
 	mux.HandleFunc("DELETE /api/v1/todos/{id}", delete)
 }
