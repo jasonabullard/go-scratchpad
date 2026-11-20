@@ -40,11 +40,12 @@
 
               <div class="wa-cluster wa-gap-xs">
 
-                <wa-button variant="success" appearance="outlined" size="sm" class="btn-delete-todo" data-id="{{.ID}}">
+                <wa-button variant="{{if .Done}}neutral{{else}}success{{end}}" appearance="outlined" size="sm"
+                  class="btnCompleteTodo" data-id="{{.ID}}" data-done="{{.Done}}">
                   <wa-icon name="check"></wa-icon>
                 </wa-button>
 
-                <wa-button variant="danger" appearance="outlined" size="sm" class="btn-delete-todo" data-id="{{.ID}}">
+                <wa-button variant="danger" appearance="outlined" size="sm" class="btnDeleteTodo" data-id="{{.ID}}">
                   <wa-icon name="x"></wa-icon>
                 </wa-button>
               </div>

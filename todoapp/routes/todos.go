@@ -64,9 +64,32 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	response.Fail(w, http.StatusNotFound, "ID not found")
 }
 
+func patch(w http.ResponseWriter, r *http.Request) {
+	body, err := io.ReadAll(r.Body)
+	if err != nil {
+		response.Fail(w, http.StatusInternalServerError, "Unable to parse data")
+		return
+	}
+
+	var updatedTodo Todo
+	if err = json.Unmarshal(body, &updatedTodo); err != nil {
+		response.Fail(w, http.StatusInternalServerError, "Cannot unmarshal data")
+		return
+	}
+
+	for i, todo := range todos {
+		if todo.ID == updatedTodo.ID {
+			todos[i].Done = updatedTodo.Done
+			response.OK(w, todos[i])
+			return
+		}
+	}
+}
+
 func registerTodos(mux *http.ServeMux) {
 	mux.HandleFunc("GET /api/v1/todos", list)
 	mux.HandleFunc("GET /api/v1/todos/{id}", get)
 	mux.HandleFunc("POST /api/v1/todos", create)
 	mux.HandleFunc("DELETE /api/v1/todos/{id}", delete)
+	mux.HandleFunc("PATCH /api/v1/todos", patch)
 }
