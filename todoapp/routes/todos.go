@@ -55,7 +55,7 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	id := r.PathValue("id")
 	for i, todo := range todos {
 		if todo.ID == id {
-			todos = slices.Delete(todos, i, 1)
+			todos = slices.Delete(todos, i, i+1)
 			response.OK(w, todo)
 			return
 		}
