@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="wa-cloak">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo</title>
+
+  <!-- Required: default theme + autoloader -->
+  <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.15.0/styles/themes/default.css">
+  <script type="module" src="https://ka-f.webawesome.com/webawesome@3.15.0/webawesome.loader.js"></script>
+
+  <!-- Recommended: utility classes ("CSS Utilities") -->
+  <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.15.0/styles/utilities.css">
+
+  <!-- Optional: CSS reset ("Native Styles") -->
+  <link rel="stylesheet" href="https://ka-f.webawesome.com/webawesome@3.15.0/styles/native.css">
+
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <wa-card>
+      <h2>Tasks</h2>
+      <div class="wa-stack">
+        <form id="add-form" class="wa-flank:end wa-gap-xs">
+          <input id="new-todo" type="text" placeholder="What needs doing?" required>
+          <button type="submit">Add</button>
+        </form>
+
+        <ul>
+          {{range .}}
+          <li>
+            <wa-divider></wa-divider>
+            <div class="wa-flank:end wa-gap-xs">
+              <span>
+                {{.Body}}
+              </span>
+
+              <div class="wa-cluster wa-gap-xs">
+
+                <wa-button variant="success" appearance="outlined" size="sm" class="btn-delete-todo" data-id="{{.ID}}">
+                  <wa-icon name="check"></wa-icon>
+                </wa-button>
+
+                <wa-button variant="danger" appearance="outlined" size="sm" class="btn-delete-todo" data-id="{{.ID}}">
+                  <wa-icon name="x"></wa-icon>
+                </wa-button>
+              </div>
+            </div>
+          </li>
+          {{end}}
+        </ul>
+      </div>
+    </wa-card>
+  </div>
+
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+body {
+  padding: 2rem;
+}
+
+.container {
+  max-width: 65ch;
+  width: 100%;
+  margin-inline: auto;
+}
